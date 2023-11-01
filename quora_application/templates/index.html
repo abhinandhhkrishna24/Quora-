@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        #header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #welcome-section {
+            background-color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #welcome-section h1 {
+            margin: 0;
+        }
+
+        #logout-button {
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #post-question-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #post-question-button {
+            background-color: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .question-box {
+            background-color: #fff;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .question {
+            margin: 20px 0;
+        }
+
+        .question-text {
+            font-weight: bold;
+        }
+
+        .question-info {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .answer-box {
+            background-color: #f9f9f9;
+            margin: 20px 0; /* Added more space between answer lists */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .answer {
+            font-weight: bold;
+        }
+
+        .answer-info {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .like-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 3px 8px; /* Reduced the size of the like button */
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-answer-button {
+            background-color: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .like-count {
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Welcome to the Q&A Page</h1>
+    </div>
+
+    <div id="welcome-section">
+        <h1>Welcome, {{ user.username }}</h1>
+        <a href="{% url 'logout' %}"><button id="logout-button">Logout</button></a>
+    </div>
+
+    <div id="post-question-section">
+        <a href="{% url 'post_question' %}">
+            <button id="post-question-button">Post a Question</button>
+        </a>
+    </div>
+
+    <div class="question-box">
+        {% for question in quest %}
+        <div class="question">
+            <div class="question-text">Q: {{ question.text }}</div>
+            <div class="question-info">Created by: {{ question.user.username }} | Created Time: {{ question.created_at }}</div>
+        </div>
+        <a href="{% url 'post_answer' question_id=question.id %}">
+            <button class="add-answer-button">Add Answer</button>
+        </a>
+    
+        <div class="answer-box">
+            {% for answer in question.answer_set.all %}
+            <div class="answer">Answer: {{ answer.text }}</div>
+            <div class="answer-info">Created by: {{ answer.user.username }} | Created Time: {{ answer.created_at }}</div>
+            <button class="like-button" onclick="likeAnswer({{ answer.id }})">Like</button>
+            <span class="like-count" id="like-count-{{ answer.id }}">Likes: {{ answer.like_count }}</span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    
+<!-- JavaScript for handling likes -->
+    <script>
+        function likeAnswer(answerId) {
+            // Make an AJAX request to the like_answer view to handle likes
+            fetch(`/like_answer/${answerId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the like count in the DOM
+                    const likeCountElement = document.querySelector(`#like-count-${answerId}`);
+                    likeCountElement.textContent = `Likes: ${data.like_count}`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

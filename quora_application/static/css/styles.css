@@ -1,0 +1,39 @@
+/* Specific Styles for Signup */
+.signup-header {
+    font-size: 24px;
+    color: #3498db; /* Set header font color to sky blue */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Update the form input fields */
+.input-field {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #3498db; /* Set border color to sky blue */
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: #fff; /* Set background color to white */
+    color: #3498db; /* Set text color to sky blue */
+}
+
+/* Update the submit button for Sign Up */
+.submit-button, .signup-button {
+    background-color: #3498db; /* Set background color to sky blue */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Link Styles */
+.link {
+    color: #3498db; /* Set link color to sky blue */
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
