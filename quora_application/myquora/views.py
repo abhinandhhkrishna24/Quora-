@@ -44,6 +44,7 @@ def signup_page(request):
 
     return render(request, 'signup.html')
 
+@login_required
 def logoutview(request):
     if request.user.is_authenticated:
         logout(request)
